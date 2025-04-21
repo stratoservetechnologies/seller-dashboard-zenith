@@ -98,7 +98,7 @@ export default function CompleteProfile() {
         location,
         phone,
         email,
-        photoURL: photoURL || undefined
+        photoURL: photoURL || null
       });
       
       toast({
