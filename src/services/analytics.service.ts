@@ -1,6 +1,6 @@
 
 import { getSellerProducts } from './products.service';
-import { getOrdersByDateRange, getOrderStats } from './orders.service';
+import { getOrdersByDateRange } from './orders.service';
 import { subDays, startOfDay, endOfDay, eachDayOfInterval } from 'date-fns';
 
 export interface DailyStats {
@@ -119,4 +119,30 @@ export const getMonthlyTrends = async (
   }, []);
   
   return monthlyStats;
-}; 
+};
+
+// Get order stats
+export const getOrderStats = async (
+  sellerId: string,
+  startDate: Date,
+  endDate: Date
+) => {
+  const orders = await getOrdersByDateRange(sellerId, startDate, endDate);
+  
+  const totalOrders = orders.length;
+  const totalRevenue = orders.reduce((sum, order) => sum + order.totalAmount, 0);
+  const completedOrders = orders.filter(order => order.status === 'completed').length;
+  const activeOrders = orders.filter(order => order.status === 'active').length;
+  const cancelledOrders = orders.filter(order => order.status === 'cancelled').length;
+  
+  const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
+  
+  return {
+    totalOrders,
+    totalRevenue,
+    completedOrders,
+    activeOrders,
+    cancelledOrders,
+    averageOrderValue
+  };
+};
