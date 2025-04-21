@@ -4,6 +4,7 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Loader2, Plus } from "lucide-react";
 import { AddProductForm } from "@/components/products/AddProductForm";
+import { ProductList } from "@/components/products/ProductList";
 import {
   Dialog,
   DialogContent,
@@ -60,8 +61,7 @@ export default function Products() {
           </div>
         ) : products && products.length > 0 ? (
           <div className="bg-white p-6 rounded-lg shadow-sm border">
-            {/* We'll implement the products list in the next iteration */}
-            <p className="text-center text-gray-500">Products will be listed here</p>
+            <ProductList products={products} />
           </div>
         ) : (
           <div className="bg-white p-6 rounded-lg shadow-sm border">
