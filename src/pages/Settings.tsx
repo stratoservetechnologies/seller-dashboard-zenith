@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import DashboardLayout from "@/components/DashboardLayout";
 import { useAuth } from "@/contexts/AuthContext";
@@ -44,16 +44,16 @@ export default function Settings() {
   });
 
   // When profile data changes, update form values
-  useState(() => {
+  useEffect(() => {
     if (userProfile) {
       form.reset({
-        storeName: userProfile.storeName,
-        location: userProfile.location,
-        phone: userProfile.phone,
-        email: userProfile.email,
+        storeName: userProfile.storeName || "",
+        location: userProfile.location || "",
+        phone: userProfile.phone || "",
+        email: userProfile.email || currentUser?.email || "",
       });
     }
-  });
+  }, [userProfile, currentUser, form]);
 
   async function onSubmit(data: SettingsFormData) {
     if (!currentUser) return;
@@ -65,7 +65,7 @@ export default function Settings() {
         location: data.location,
         phone: data.phone,
         email: userProfile?.email || currentUser.email || "",
-        photoURL: userProfile?.photoURL,
+        photoURL: userProfile?.photoURL || "",
       });
       
       toast({
