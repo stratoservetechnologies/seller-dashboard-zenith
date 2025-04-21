@@ -22,8 +22,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
 
 export default function Orders() {
   const { currentUser } = useAuth();
@@ -40,7 +40,6 @@ export default function Orders() {
     enabled: !!currentUser,
   });
 
-  // Format date for display
   const formatOrderDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -84,7 +83,9 @@ export default function Orders() {
           </div>
         ) : !orders || orders.length === 0 ? (
           <div className="bg-white p-6 rounded-lg shadow-sm border text-center">
-            <p className="text-gray-500 py-8">No {statusFilter !== "all" ? statusFilter : ""} orders found.</p>
+            <p className="text-gray-500 py-8">
+              No {statusFilter !== "all" ? statusFilter : ""} orders found.
+            </p>
           </div>
         ) : (
           <div className="bg-white rounded-lg shadow-sm border">
@@ -103,17 +104,22 @@ export default function Orders() {
               <TableBody>
                 {orders.map((order) => (
                   <TableRow key={order.id}>
-                    <TableCell className="font-medium">{order.id.substring(0, 8)}...</TableCell>
+                    <TableCell className="font-medium">
+                      {order.id.substring(0, 8)}...
+                    </TableCell>
                     <TableCell>
                       {order.products.map((product, index) => (
-                        <div key={product.productId}>
-                          {product.name} ({product.quantity}) {index < order.products.length - 1 ? ',' : ''}
-                        </div>
+                        <span key={product.productId}>
+                          {product.name} ({product.quantity})
+                          {index < order.products.length - 1 ? ', ' : ''}
+                        </span>
                       ))}
                     </TableCell>
                     <TableCell>
                       <div>{order.customerName}</div>
-                      <div className="text-xs text-muted-foreground">{order.customerEmail}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {order.customerEmail}
+                      </div>
                     </TableCell>
                     <TableCell>
                       <div className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${

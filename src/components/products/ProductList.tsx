@@ -1,15 +1,7 @@
-
 import React from "react";
 import { Product, deleteProduct } from "@/services/products.service";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
-import { 
-  Card, 
-  CardContent, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -19,6 +11,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Edit, Trash, Settings } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -61,29 +61,26 @@ export function ProductList({ products }: ProductListProps) {
     }
   };
 
-  if (!products.length) {
-    return (
-      <div className="text-center text-gray-500 py-12">
-        No products found.
-      </div>
-    );
-  }
-
   return (
-    <div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map((product) => (
-          <Card key={product.id} className="overflow-hidden">
-            <div className="aspect-square overflow-hidden">
-              <img 
-                src={product.imageURL || "/placeholder.svg"} 
-                alt={product.name}
-                className="w-full h-full object-cover transition-transform hover:scale-105"
-              />
-            </div>
-            <CardHeader className="p-4 pb-0">
-              <div className="flex justify-between items-start">
-                <CardTitle className="text-lg truncate">{product.name}</CardTitle>
+    <div className="w-full">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Stock</TableHead>
+            <TableHead>Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {products.map((product) => (
+            <TableRow key={product.id}>
+              <TableCell className="font-medium">{product.name}</TableCell>
+              <TableCell>{product.category || "Uncategorized"}</TableCell>
+              <TableCell>₹{product.price.toFixed(2)}</TableCell>
+              <TableCell>{product.quantity}</TableCell>
+              <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -105,24 +102,11 @@ export function ProductList({ products }: ProductListProps) {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              </div>
-            </CardHeader>
-            <CardContent className="p-4">
-              <div className="flex justify-between">
-                <span className="text-lg font-semibold">₹{product.price.toFixed(2)}</span>
-                <span className="text-sm text-muted-foreground">
-                  Stock: {product.quantity}
-                </span>
-              </div>
-              <div className="mt-1">
-                <span className="inline-block px-2 py-0.5 bg-purple-100 text-purple-800 text-xs rounded-full">
-                  {product.category || "Uncategorized"}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
 
       <AlertDialog 
         open={!!productToDelete} 
