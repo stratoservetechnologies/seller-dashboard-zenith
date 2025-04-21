@@ -1,6 +1,7 @@
+
 import { getSellerProducts } from './products.service';
 import { getOrdersByDateRange, getOrderStats } from './orders.service';
-import { subDays, startOfDay, endOfDay, eachDay } from 'date-fns';
+import { subDays, startOfDay, endOfDay, eachDayOfInterval } from 'date-fns';
 
 export interface DailyStats {
   date: string;
@@ -35,7 +36,7 @@ export const getDailyTrends = async (
   endDate: Date
 ): Promise<DailyStats[]> => {
   const orders = await getOrdersByDateRange(sellerId, startDate, endDate);
-  const days = eachDay(startDate, endDate);
+  const days = eachDayOfInterval({ start: startDate, end: endDate });
   
   return days.map(date => {
     const dayStart = startOfDay(date);

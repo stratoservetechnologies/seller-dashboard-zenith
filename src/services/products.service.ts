@@ -1,3 +1,4 @@
+
 import {
   collection,
   doc,
@@ -17,6 +18,7 @@ export interface Product {
   price: number;
   quantity: number;
   imageURL: string;
+  category: string;
   sellerId: string;
   createdAt: string;
   updatedAt: string;
